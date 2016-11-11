@@ -5,18 +5,42 @@
   <title>Refactored date examples</title>
   <script src="prettydate.js"></script>
   <script>
-  window.onload = function() {
-    var links = document.getElementsByTagName("a");
-    for ( var i = 0; i < links.length; i++ ) {
-      if ( links[i].title ) {
-        var date = prettyDate("2016-11-11T17::00Z",
-          links[i].title);
-        if ( date ) {
-          links[i].innerHTML = date;
+    window.onload = function() {
+      var links = document.getElementsByTagName("a");
+      for ( var i = 0; i < links.length; i++ ) {
+        if ( links[i].title ) {
+          var date = prettyDate("2016-11-11T17:19:00Z",
+            links[i].title);
+          if ( date ) {
+            links[i].innerHTML = date;
+          }
         }
       }
+    };
+  </script>
+  <script>
+    function test(then, expected) {
+      results.total++;
+      var result = prettyDate("2016/11/11 17:19:00", then);
+      if (result !== expected) {
+        results.bad++;
+        console.log("Expected " + expected +
+          ", but was " + result);
+      }
     }
-  };
+    var results = {
+      total: 0,
+      bad: 0
+    };
+    test("2016/11/11 17:19:00", "just now");
+    test("2016/11/11 17:18:00", "1 minute ago");
+    test("2016/11/11 16:19:00", "1 hour ago");
+    test("2016/11/10 17:19:00", "Yesterday");
+    test("2016/11/09 17:19:00", "2 days ago");
+    test("2007/01/26 22:23:30", undefined);
+    console.log("Of " + results.total + " tests, " +
+      results.bad + " failed, " +
+      (results.total - results.bad) + " passed.");
   </script>
 </head>
 <body>
